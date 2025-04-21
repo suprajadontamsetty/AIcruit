@@ -1,4 +1,4 @@
-import { getInterviewById } from '@/lib/actions/general.action';
+import { getInterviewById,getFeedbackByInterviewId } from '@/lib/actions/general.action';
 import React from 'react'
 import {redirect} from 'next/navigation';
 import Image from 'next/image';
@@ -12,7 +12,12 @@ const page = async({params}:RouteParams) => {
   const user = await getCurrentUser();
   const interview = await getInterviewById(id);
 
-  if(!interview) redirect('/')
+  if(!interview) redirect('/');
+  const feedback = await getFeedbackByInterviewId({
+    interviewId: id,
+    userId: user?.id!,
+  });
+
   return (
     <>
      <div className='flex flex-row gap-4 justify-between'>
@@ -35,6 +40,7 @@ const page = async({params}:RouteParams) => {
         interviewId={id}
         type="interview"
         questions={interview.questions}
+        feedbackId={feedback?.id}
        /> 
     </>
   )

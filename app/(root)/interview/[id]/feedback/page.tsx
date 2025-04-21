@@ -10,16 +10,18 @@ import Link from "next/link";
 const page = async({params}:RouteParams) => {
   const{id} = await params;
   const user=await getCurrentUser();
+
   const interview = await getInterviewById(id);
 
   if(!interview) redirect('/');
+  
   const feedback=await getFeedbackByInterviewId({
     interviewId:id,
     userId:user?.id!,
 
   });
 
-  console.log(feedback);
+ 
 
   return (
     <section className="section-feedback">
